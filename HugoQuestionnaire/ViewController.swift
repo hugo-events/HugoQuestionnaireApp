@@ -21,11 +21,8 @@ class ViewController: UIViewController {
         self.webView.scalesPageToFit = true
         self.registerSettingsBundle()
         self.updateDisplayFromDefaults()
-        NotificationCenter.default.addObserver(self,
-                                                         selector: Selector("defaultsChanged"),
-                                                         name: UserDefaults.didChangeNotification,
-                                                         object: nil)
-    }
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.defaultsChanged), name: UserDefaults.didChangeNotification, object: nil)
+//    }
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -48,6 +45,7 @@ class ViewController: UIViewController {
     func registerSettingsBundle(){
         let appDefaults = [String:AnyObject]()
         UserDefaults.standard.register(defaults: appDefaults)
+        UserDefaults.standard.synchronize()
     }
 
     override func didReceiveMemoryWarning() {

@@ -9,12 +9,20 @@
 		<dict>
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
-			<key>DefaultValue</key>
-			<string>https://qre.hugo.events/qre/your-id</string>
 			<key>Title</key>
 			<string>Questionnaire URL</string>
 			<key>Key</key>
 			<string>qre_url</string>
+			<key>DefaultValue</key>
+			<string></string>
+			<key>IsSecure</key>
+			<false/>
+			<key>KeyboardType</key>
+			<string>URL</string>
+			<key>AutocapitalizationType</key>
+			<string>None</string>
+			<key>AutocorrectionType</key>
+			<string>No</string>
 		</dict>
 	</array>
 </dict>
