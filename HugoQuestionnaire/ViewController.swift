@@ -12,6 +12,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var webView: UIWebView!
     var timer: Timer?
+    var request: URLRequest?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,8 +38,8 @@ class ViewController: UIViewController {
         //Set the controls to the default values.
         if let url = defaults.string(forKey: "qre_url"){
             let url = URL(string: url)
-            let request = URLRequest(url: url!)
-            self.webView.loadRequest(request)
+            self.request = URLRequest(url: url!, timeoutInterval: 0.5)
+            self.webView.loadRequest(self.request!)
         }
     }
     
@@ -56,8 +57,11 @@ class ViewController: UIViewController {
 
 extension ViewController: UIWebViewDelegate {
     
-    
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        self.webView = webView
+        if self.request!.url?.absoluteString == request.url?.absoluteString{
+            self.timer = Timer.scheduledTimer(timeInterval: TimeInterval.init(floatLiteral: 10.0), target: self, selector: #selector(ViewController.checkStatus), userInfo: nil, repeats: true)
+        }
         return true
     }
     
@@ -66,11 +70,24 @@ extension ViewController: UIWebViewDelegate {
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
+        return;
      }
 
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
     }
-
+    
+    func checkStatus() {
+        print ("checking status")
+        self.timer?.invalidate()
+        let js = "DATA != undefined && document.getElementById('waitAnim') == undefined"
+        let result = self.webView.stringByEvaluatingJavaScript(from: js)
+        if result != "true" {
+            print("reloading due to an error")
+            self.webView.loadRequest(self.request!)
+        } else {
+            print("loaded ok")
+        }
+    }
 
 }
 
